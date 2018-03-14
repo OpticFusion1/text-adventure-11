@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 /**
  * Write a description of class AFSEBackpack here.
  * 
@@ -7,7 +8,13 @@ import java.util.List;
  */
 public class AFSEBackpack implements Inventory
 {
-    private List<Item> pockets;
+    private List<Item> slots;
+    
+    public AFSEBackpack()
+    {
+        slots = new ArrayList<Item>();
+    }
+    
     /**
      * Adds an {@link Item} to the inventory
      *
@@ -15,6 +22,17 @@ public class AFSEBackpack implements Inventory
      */
     public void addItem(Item i)
     {
+        cleanUp();
+        for(int idx = 0; idx < slots.size(); idx++)
+        {
+            Item itemInSlot = slots.get(idx);
+            if(itemInSlot.getName().equals(i.getName()))
+            {
+                itemInSlot.combine(i);
+                return;
+            }
+        }
+        slots.add(i);
     }
 
     /**
@@ -27,6 +45,14 @@ public class AFSEBackpack implements Inventory
      */
     public boolean hasItem(String itemName)
     {
+        cleanUp();
+        for(int i = 0; i < slots.size(); i++)
+        {
+            if(slots.get(i).getName().equals(itemName))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -41,6 +67,28 @@ public class AFSEBackpack implements Inventory
      */
     public Item getItem(String itemName) throws IllegalArgumentException
     {
-        return null;
+        cleanUp();
+        for(int i = 0; i < slots.size(); i++)
+        {
+            if(slots.get(i).getName().equals(itemName))
+            {
+                return slots.get(i);
+            }
+        }
+        throw new IllegalArgumentException(itemName + " does not exist.");
+    }
+    
+    private void cleanUp()
+    {
+        
+        for(int i = 0; i < slots.size(); i++)
+        {
+            if(slots.get(i).getCount() <= 0)
+            {
+                slots.remove(i);
+                i--;
+            }
+        }
+        
     }
 }

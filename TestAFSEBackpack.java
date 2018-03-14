@@ -174,7 +174,7 @@ public class TestAFSEBackpack
         
         c.use(1);
         
-        // Cookies disappears because all 3 units have been used
+        // Cookies disappear because all 3 units have been used
         assertEquals(false, inv.hasItem("Cookies"));
         assertEquals(true, inv.hasItem("Money"));
         
